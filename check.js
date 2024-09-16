@@ -10,6 +10,8 @@ onmessage = (e) => {
       postMessage({
         type: 'hasUpdate',
       });
+    } else {
+      console.log('暂无更新内容');
     }
     lastEtag = etag;
   }

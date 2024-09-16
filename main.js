@@ -2,6 +2,9 @@ import './style.css';
 import javascriptLogo from './javascript.svg';
 import viteLogo from '/vite.svg';
 import { setupCounter } from './counter.js';
+import Check from './check.js?worker';
+
+const BASE_URL = import.meta.env.BASE_URL;
 
 document.querySelector('#app').innerHTML = `
   <div>
@@ -26,7 +29,7 @@ document.querySelector('#app').innerHTML = `
 `;
 
 setupCounter(document.querySelector('#counter'));
-const work = new Worker('./check.js');
+const work = new Check('./check.js');
 
 work.onmessage = (e) => {
   const data = e.data;
@@ -43,7 +46,7 @@ dis_worker.addEventListener('click', function () {
 });
 
 btn.addEventListener('click', async function () {
-  const response = await fetch(`/m.json?v=${Date.now()}`);
+  const response = await fetch(`${BASE_URL}m.json?v=${Date.now()}`);
   const etag = response.headers.get('etag');
   work.postMessage({
     type: 'check',
